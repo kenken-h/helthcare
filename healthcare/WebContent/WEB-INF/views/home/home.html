@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/frag01 :: htmlhead" th:with="title=#{app.title}"></head>
+
+<style>
+.contents {margin: 50px;}
+td {padding: 2px;}
+th {padding: 5px;}
+</style>
+<body th:object="${homeCmd}">
+
+<div th:include="fragment/frag01 :: navbar" th:with="title=#{app.title}"></div>
+
+<div class="contents">
+<div class="container">
+<!-- BEGIN -->
+
+  <div class="row">
+    <div class="col-sm-12">
+	  <h3 class="page-header" th:utext="#{home.title}">Home
+	  <small>(Spring MVC Demo)</small></h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+	  <p th:utext="#{home.welcome}">Welcome to our mvc sample</p>
+      <hr />
+      <div th:include="fragment/frag01 :: footer" th:with="title=#{app.footer}"></div>
+    </div>
+  </div>
+
+<!-- END -->
+</div>
+</div>
+</body>
+</html>
