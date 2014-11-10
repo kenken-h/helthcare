@@ -97,4 +97,22 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		resolver.setMessageSource(messageSource());
 		return resolver;
 	}
+	
+	/**
+	 * バイタルマスター作成するためのビーン.
+	 * TODO: 実際のアプリでは不要
+	 */
+	@Bean(initMethod = "initData")
+	public InitMaster initData() {
+		return new InitMaster();
+	}
+	/**
+	 * １月分のバイタルデータを作成するためのビーン.
+	 * TODO: 実際のアプリでは不要
+	 */
+	@Bean(initMethod = "createData")
+	public CreateDummyData createData() {
+		return new CreateDummyData();
+	}
+
 }
