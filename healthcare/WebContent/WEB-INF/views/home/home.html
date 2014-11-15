@@ -5,8 +5,8 @@
 
 <style>
 .contents {margin: 50px;}
-td {padding: 2px;}
-th {padding: 5px;}
+td {padding: 1px;}
+th {padding: 4px;}
 </style>
 <body th:object="${homeCmd}">
 
@@ -14,11 +14,10 @@ th {padding: 5px;}
 
 <div class="contents">
 <div class="container">
-<!-- BEGIN -->
 
   <div class="row">
     <div class="col-sm-12">
-	  <h3 class="page-header" th:utext="#{home.title}">Home
+	  <h3 class="page-header" th:utext="#{home.title(*{sokuteiBi})}">Home
 	  <small>(Spring MVC Demo)</small></h3>
     </div>
   </div>
@@ -26,12 +25,62 @@ th {padding: 5px;}
   <div class="row">
     <div class="col-sm-12">
 	  <p th:utext="#{home.welcome}">Welcome to our mvc sample</p>
+      <!-- Vod Form -->
+      <form class="form-horizontal" role="form" action="#" th:action="@{/updateVod}"
+     		th:object="${homeCmd}" method="post">
+        <fieldset>
+           <div class="form-group">
+            <label class="col-sm-2 control-label text-primary" for="memo">メモ</label>
+            <div class="col-sm-10 controls">  
+              <textarea rows="2"  th:field="*{memo}" placeholder="メモ"
+                   th:errorclass="fieldError" maxlength="800" class="form-control focus" ></textarea>
+              <span th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}">不正な入力</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label text-primary" >バイタル</label>
+            <div class="col-sm-8 controls">
+              <table >
+                <thead>
+                 <tr>
+                   <th class="text-primary">タイプ</th>
+                   <th class="text-primary">測定予定</th>
+                   <th class="text-primary">記入時間</th>
+                   <th class="text-primary">測定値</th>
+                   <th><button type="submit" class="btn btn-primary">保存</button></th>
+                 </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="vc, row : *{vitalCmds}" >
+                   <td th:text="${vc.name + ':'}"  class="text-danger">タイプ</td>
+                   <td th:text="${vc.yoteiJikan}" align="center">測定予定</td>
+                   <td th:text="${vc.sokuteiJikan}" align="center">記入時間</td> 
+                   <td class="controls" align="right">
+                     <div th:if="*{vitalCmds[__${row.index}__].sokuteiTi=='0'}"
+                         class="input-group col-sx-3">
+                     <span th:if="${vc.errMsg!=''}" class="input-group-addon">E</span>
+                     <input type="number" th:field="*{vitalCmds[__${row.index}__].sokuteiTi}"
+                       placeholder="測定値" maxlength="5" class="form-control" />
+                     </div>
+                     <div th:if="*{vitalCmds[__${row.index}__].sokuteiTi!='0'}" 
+                           th:text="*{vitalCmds[__${row.index}__].sokuteiTi}">測定値</div>
+                   </td>
+                   <td th:if="*{vitalCmds[__${row.index}__].sokuteiTi!='0'}">
+                     <button class="btn btn-success">修正</button></td>
+                   <td th:if="${vc.errMsg!=''}" th:utext="${vc.errMsg}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </fieldset>
+      </form>
       <hr />
       <div th:include="fragment/frag01 :: footer" th:with="title=#{app.footer}"></div>
     </div>
   </div>
 
-<!-- END -->
 </div>
 </div>
 </body>

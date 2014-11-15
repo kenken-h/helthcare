@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * データベース設定.
-　*  @EnableTransactionManagement : <tx:annotation-driven transaction-manager="transactionManager" />
- *  @EnableJpaRepositories("..."): <jpa:repositories base-package="..." />
  */
 @Configuration
 @EnableTransactionManagement

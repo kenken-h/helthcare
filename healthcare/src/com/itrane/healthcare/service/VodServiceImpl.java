@@ -50,12 +50,6 @@ public class VodServiceImpl implements VodService {
 	@Override
 	@Transactional(rollbackFor=VodNotFound.class)
 	public Vod update(Vod vod)  {
-		for (Vital vt: vod.getVitals()) {
-			log.debug(vt.toString());
-		}
-		log.debug(vod.toString());
-		for(Vital vt: vod.getVitals()) { log.debug(vt.toString()); }
-		log.debug("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		for(Vital vt: vod.getVitals()) {
 			if (vt.getSokuteiJikan() != null) {
 				vitalRepository.save(vt); 
