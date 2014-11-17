@@ -50,7 +50,7 @@
             <li class="dropdown"><a href="#" class="dropdown-toggle"
               data-toggle="dropdown"> バイタル管理 <b class="caret"></b></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#" >バイタル一覧</a></li>
+                <li><a href="#" th:href="@{/vodList}">バイタル一覧</a></li>
                 <li><a href="#" th:href="@{/updateVod}">バイタルチェック</a></li>
                 <li class="divider"></li>
                 <li><a href="#" >インポート</a></li>
@@ -69,6 +69,26 @@
       </p>
     </footer>
   </div>
+  
+<!-- Chart Create Modal -->
+<div th:fragment="chart-create-modal">
+<div class="modal fade　bs-example-modal-lg" id="myModal" tabindex="-1" 
+role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title" id="myModalLabel">タイトル</h3>
+      </div>
+      <div class="modal-body">
 
+          <div id="chart_div" style="width: 800px; height: 400px;"></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+  
 </body>
 </html>
