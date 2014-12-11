@@ -16,6 +16,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ResourceBundleViewResolver;
+import org.springframework.web.servlet.view.XmlViewResolver;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -76,6 +78,25 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setCache(false);
 		viewResolver.setCharacterEncoding("UTF-8");
 		return viewResolver;
+	}
+	
+	// Excel ビューリゾルバー
+	// "spreadsheet-views.xml"で"accounts/list"と呼ばれるビーンにマップする
+	@Bean
+	public ViewResolver excelViewResolver() throws Exception {
+		XmlViewResolver resolver = new XmlViewResolver();
+		resolver.setOrder(1);
+		//resolver.setLocation(new ServletContextResource(servletContext,"/WEB-INF/views.xml"));
+		return resolver;
+	}
+	
+	// PDF ビューリゾルバー
+	@Bean
+	public ViewResolver pdfViewResolver() throws Exception {
+		ResourceBundleViewResolver resolver = new ResourceBundleViewResolver();
+		resolver.setOrder(1);
+		resolver.setBasename("views");
+		return resolver;
 	}
 
 	// メッセージソースの設定
