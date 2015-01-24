@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -97,6 +99,14 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		resolver.setOrder(1);
 		resolver.setBasename("views");
 		return resolver;
+	}
+
+	// マルチパートリゾルバ
+	@Bean
+	public MultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setMaxUploadSize(500000000);
+		return multipartResolver;
 	}
 
 	// メッセージソースの設定
