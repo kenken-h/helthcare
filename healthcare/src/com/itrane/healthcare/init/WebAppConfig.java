@@ -1,5 +1,8 @@
 package com.itrane.healthcare.init;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
@@ -12,6 +15,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -25,17 +32,22 @@ import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import com.itrane.healthcare.task.TakeMedTask;
+
 /**
  * Spring フレームワークの設定. 
  * 注意：この Java 設定クラスを使用するには Spring Framework 3.1 以上が必要
  */
 @Configuration
 @EnableWebMvc
+@EnableAsync
+@EnableScheduling
 @Import({ DbConfig.class })
 // データベース設定をインポート
 @ComponentScan("com.itrane.healthcare")
 @PropertySource("classpath:resources/app.properties")
-public class WebAppConfig extends WebMvcConfigurerAdapter {
+public class WebAppConfig extends WebMvcConfigurerAdapter
+				implements SchedulingConfigurer {
 
 	@Resource
 	private Environment env;
@@ -146,4 +158,34 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		return new CreateDummyData();
 	}
 
+	/**
+	 * タスクスケジューラを登録して、固定間隔でスケジュールされたタスクを追加.
+	 */
+	@Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        taskRegistrar.setScheduler(taskScheduler());
+        taskRegistrar.addFixedRateTask(
+            new Runnable() {
+                public void run() {
+                    takeMedTask().noticeTakeMedicine();
+                }
+            }, 5000
+        );
+    }
+
+	/**
+	 * タスクスケジューラの生成.
+	 */
+    @Bean(destroyMethod="shutdown")
+    public Executor taskScheduler() {
+        return Executors.newScheduledThreadPool(20);
+    }
+
+    /**
+     * 薬の服用を通知するタスクの生成.
+     */
+    @Bean
+    public TakeMedTask takeMedTask() {
+        return new TakeMedTask();
+    }
 }
