@@ -5,16 +5,21 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>healthcare</name>
+  <description>健康管理アプリケーション</description>
   
 	<!-- ここに依存ライブラリを指定 -->
 	<properties>
 		<!-- Spring / Hibernate version -->
-		<version.spring>4.1.1.RELEASE</version.spring>
-		<version.spring.data>1.7.0.RELEASE</version.spring.data>
-		<version.thymeleaf>2.1.3.RELEASE</version.thymeleaf>
+		<version.spring>4.1.4.RELEASE</version.spring>
+		<version.spring.data>1.7.1.RELEASE</version.spring.data>
+		<version.spring.boot>1.1.10.RELEASE</version.spring.boot>
+		<version.spring.security>3.2.5.RELEASE</version.spring.security>
+		<version.thymeleaf>2.1.4.RELEASE</version.thymeleaf>
 		<version.eclipselink>2.5.0</version.eclipselink>
-		<version.mysql>5.1.22</version.mysql>
+		<version.jackson.databind>2.4.3</version.jackson.databind>
+		<version.mysql>5.1.34</version.mysql>
 		<version.servlet>3.0.1</version.servlet>
+		<version.javax.validation>1.1.0.Final</version.javax.validation>
 		<version.hibernate.validation>5.1.2.Final</version.hibernate.validation>
 		<version.jstl>1.2</version.jstl>
 		<version.sl4j>1.7.7</version.sl4j>
@@ -34,7 +39,13 @@
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>${version.thymeleaf}</version>
 		</dependency>
-
+		<!-- Security -->
+        <dependency>
+	      <groupId>org.thymeleaf.extras</groupId>
+	      <artifactId>thymeleaf-extras-springsecurity3</artifactId>
+	      <version>2.1.1.RELEASE</version>
+	    </dependency>
+	    
 		<!-- Servlet & taglibs -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -58,12 +69,12 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>1.0.0.GA</version>
+			<version>${version.javax.validation}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.3.0.Final</version>
+			<version>${version.hibernate.validation}</version>
 		</dependency>
 
 		<!-- Spring MVC -->
@@ -83,6 +94,23 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>${version.spring.data}</version>
 		</dependency>
+		<!-- Spring Boot -->
+        <dependency>
+    	    <groupId>org.springframework.boot</groupId>
+    	    <artifactId>spring-boot-starter-web</artifactId>
+    	    <version>${version.spring.boot}</version>
+        </dependency>
+        <!-- Spring Security -->
+        <dependency>
+	        <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${version.spring.security}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${version.spring.security}</version>
+        </dependency>
 
 		<!-- JPA : eclipselink -->
 		<dependency>
@@ -99,16 +127,16 @@
 
 		<!-- Apache Commons file upload -->
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
-		</dependency>
+	      <groupId>commons-fileupload</groupId>
+	      <artifactId>commons-fileupload</artifactId>
+	      <version>1.3.1</version>
+        </dependency>
 		<!-- Apache Commons IO -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+	      <groupId>commons-io</groupId>
+	      <artifactId>commons-io</artifactId>
+	      <version>2.3</version>
+        </dependency>
 
 		<!-- 動的コード生成 -->
 		<dependency>
@@ -122,19 +150,13 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.5</version>
 		</dependency>
-		<!-- Jacson -->
+        <!-- Jackson -->
         <dependency>
-    	    <groupId>org.springframework.boot</groupId>
-    	    <artifactId>spring-boot-starter-web</artifactId>
-    	    <version>1.0.0.RELEASE</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson.databind}</version>
         </dependency>
-		<!-- JSON -->
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<!-- Excell -->
+        <!-- Excell -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -213,7 +235,7 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-  
+    
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>

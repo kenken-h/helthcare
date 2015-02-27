@@ -10,8 +10,7 @@ import javax.persistence.Version;
 
 /**
  * １日分のバイタル測定値の定義.
- * デモアプリは簡単にするために一人のユーザーを対象
- * 実際にはユーザーごとに管理する。
+ * ユーザーごとに管理する。
  */
 @Entity
 @Table(name = "vitalmst")
@@ -21,7 +20,7 @@ public class VitalMst implements Serializable {
 	
 	@Id
 	@GeneratedValue
-	private Integer id = null;
+	private Long id = null;
 	
 	@Version
     protected Integer version = 0;
@@ -32,6 +31,8 @@ public class VitalMst implements Serializable {
 	private Number kijunMax;
 	private String type;
 	private int junjo;
+	
+	private String userName;
 	
 	public VitalMst() {
 		//
@@ -49,10 +50,10 @@ public class VitalMst implements Serializable {
 		this.junjo = junjo;
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Integer getVersion() {
@@ -106,6 +107,14 @@ public class VitalMst implements Serializable {
 		this.junjo = junjo;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -133,11 +142,9 @@ public class VitalMst implements Serializable {
 
 	@Override
 	public String toString() {
-		return "VitalM [id=" + id + ", version=" + version + ", name=" + name
+		return "VitalMst [id=" + id + ", version=" + version + ", name=" + name
 				+ ", jikan=" + jikan + ", kijunMin=" + kijunMin + ", kijunMax="
-				+ kijunMax + ", type=" + type + ", junjo=" + junjo + "]";
+				+ kijunMax + ", type=" + type + ", junjo=" + junjo
+				+ ", userName=" + userName + "]";
 	}
-	
-	
-	
 }

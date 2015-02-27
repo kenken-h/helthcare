@@ -27,6 +27,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 import org.springframework.web.servlet.view.XmlViewResolver;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -42,7 +44,7 @@ import com.itrane.healthcare.task.TakeMedTask;
 @EnableWebMvc
 @EnableAsync
 @EnableScheduling
-@Import({ DbConfig.class })
+@Import({ DbConfig.class, WebSecConfig.class })
 // データベース設定をインポート
 @ComponentScan("com.itrane.healthcare")
 @PropertySource("classpath:resources/app.properties")
@@ -79,6 +81,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter
 		SpringTemplateEngine engine = new SpringTemplateEngine();
 		engine.setTemplateResolver(templateResolver());
 		engine.setMessageResolver(messageResolver());
+		engine.addDialect(springSecurityDialect());
 		return engine;
 	}
 
@@ -94,6 +97,16 @@ public class WebAppConfig extends WebMvcConfigurerAdapter
 		return viewResolver;
 	}
 	
+	/**
+	 * spring セキュリティ・ダイアレクト・ビーン (springSecurityDialect) の作成
+	 * @return
+	 */
+    @Bean
+    public IDialect springSecurityDialect() {
+        SpringSecurityDialect dialect = new SpringSecurityDialect();
+        return dialect;
+    }
+
 	// Excel ビューリゾルバー
 	// "spreadsheet-views.xml"で"accounts/list"と呼ばれるビーンにマップする
 	@Bean
@@ -169,7 +182,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter
                 public void run() {
                     takeMedTask().noticeTakeMedicine();
                 }
-            }, 5000
+            }, 1000 * 60 * 10
         );
     }
 
