@@ -9,8 +9,8 @@
 
 <!-- CSS -->
 <link rel="stylesheet"
-  href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.1/css/jquery.dataTables.css" />
+  href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css" />
 
 <!-- HTML5 shim, IE6-8 で HTML5 要素をサポートする -->
 <!--[if lt IE 9]>
@@ -19,83 +19,70 @@
 
 <!-- JavaScript : jquery, bootstrap, custom -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script src="//cdn.datatables.net/1.10.1/js/jquery.dataTables.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
 
-  <!-- ナビゲーション・バー -->
-  <div th:fragment="navbar">
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" th:href="@{/}"> <span th:text="${title}">(title)</span>
-            <span> : <small sec:authentication="name">Bob</small>
-            <small sec:authorize="hasRole('ROLE_ADMIN')">(管理者)</small></span>
-          </a>
-        </div>
-        <!-- menu -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <!-- menu1 -->
-            <li><a href="#" th:text="${about}">About</a></li>
-            <!-- menu2 -->
-            <li><a href="#">カレンダー</a></li>
-            <!-- menu3 -->
-            <li class="dropdown"><a href="#" class="dropdown-toggle"
-              data-toggle="dropdown"> お薬手帳 <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">個人カルテ</a></li>
-                <li><a href="#">処方箋</a></li>
-              </ul></li>
-            <!-- menu4 -->
-            <li class="dropdown"><a href="#" class="dropdown-toggle"
-              data-toggle="dropdown"> バイタル管理 <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#" th:href="@{/vodList}">バイタル一覧</a></li>
-                <li><a href="#" th:href="@{/updateVod}">バイタルチェック</a></li>
-                <li class="divider"></li>
-                <li><a href="#" th:href="@{/importForm}">インポート</a></li>
-                <li><a href="#" th:href="@{/exportForm}">エクスポート</a></li>
-                <li class="divider"></li>
-             　 <li><a href="#" th:href="@{/admin/userList}">ユーザー一覧 (管理者)</a></li>
-              </ul></li>
+<!-- $$$$$ ナビゲーション・バー -->
+<div th:fragment="navbar">
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" th:href="@{/}"> <span th:text="${title}">(title)</span>
+        <span> : <small sec:authentication="name">Bob</small>
+        <small sec:authorize="hasRole('ROLE_ADMIN')">(管理者)</small></span>
+        </a>
+      </div>
+      <!-- menu -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <!-- menu1 -->
+          <li><a href="#" th:text="${about}">About</a></li>
+          <!-- menu2 -->
+          <li><a target="_blank" href="https://www.google.com/calendar">カレンダー</a></li>
+          <!-- menu3 -->
+          <li class="dropdown"><a href="#" class="dropdown-toggle"
+            data-toggle="dropdown"> お薬手帳 <b class="caret"></b></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">個人カルテ</a></li>
+              <li><a href="#">処方箋</a></li>
+            </ul></li>
+          <!-- menu4 -->
+          <li class="dropdown"><a href="#" class="dropdown-toggle"
+            data-toggle="dropdown"> バイタル管理 <b class="caret"></b></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#" th:href="@{/vodList}">バイタル一覧</a></li>
+              <li><a href="#" th:href="@{/updateVod}">バイタルチェック</a></li>
+            </ul></li>
+          <!-- menu5 -->
+          <li class="dropdown"><a href="#" class="dropdown-toggle"
+            data-toggle="dropdown"> 保守 <b class="caret"></b></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#" th:href="@{/admin/userList}">ユーザー一覧 (管理者)</a></li>
+              <li><a href="#">薬マスター一覧 (管理者)</a></li>
+              <li class="divider"></li>
+              <li><a href="#">バイタルマスター一覧</a></li>
+            </ul></li>
           <!-- logout -->
           <li><a href="#" th:href="@{/logout}">ログアウト</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </div>
-  <!-- フッター -->
-  <div th:fragment="footer">
-    <footer>
-      <p>
-        &copy; <span th:text="${title}">(title)</span>
-      </p>
-    </footer>
-  </div>
-  
-<!-- Chart Create Modal -->
-<div th:fragment="chart-create-modal">
-<div class="modal fade　bs-example-modal-lg" id="myModal" tabindex="-1" 
-role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title" id="myModalLabel">タイトル</h3>
-      </div>
-      <div class="modal-body">
-
-          <div id="chart_div" style="width: 800px; height: 400px;"></div>
-
+        </ul>
       </div>
     </div>
-  </div>
+  </nav>
 </div>
+<!-- %%%%% ナビゲーション・バー -->
+
+<!-- $$$$$ フッター -->
+<div th:fragment="footer">
+  <footer>
+    <p>
+      &copy; <span th:text="${title}">(title)</span>
+    </p>
+  </footer>
 </div>
+<!-- %%%%% フッター -->
   
 </body>
 </html>

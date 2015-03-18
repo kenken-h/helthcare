@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- $$$$$ ユーザーフォーム -->
+<div th:fragment="user-form">
+          <form class="form-horizontal" role="form" action="#" th:action="@{/admin/saveUser}"
+            th:object="${user}" method="post" id="modalForm">
+　　　　　　　 <div th:if="${cmd.status}==1" th:text="${cmd.message}" 
+                class="alert alert-error">メッセージ</div>
+            <input hidden="true" type="text" th:field="*{id}" id="id" />
+            <input hidden="true" type="text" th:field="*{version}" id="version" />
+            <input hidden="true" type="text" id="status" th:field="${cmd.status}" />
+            <fieldset>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="name">ユーザー名</label>
+                <div class="col-sm-8 controls">
+                  <input type="text" th:field="*{name}" placeholder="ユーザー名" id="name"
+                    th:errorclass="fieldError" maxlength="20" class="form-control" /> <span
+                    th:if="${#fields.hasErrors('name')}" th:errors="*{name}">不正な入力</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="pass">姓</label>
+                <div class="col-sm-8 controls">
+                  <input type="text" th:field="*{simeiSei}" placeholder="姓" id="simeiSei"
+                    th:errorclass="fieldError" maxlength="13" class="form-control" /> <span
+                    th:if="${#fields.hasErrors('simeiSei')}" th:errors="*{simeiSei}">不正な入力</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="pass">名</label>
+                <div class="col-sm-8 controls">
+                  <input type="text" th:field="*{simeiMei}" placeholder="名" id="simeiMei"
+                    th:errorclass="fieldError" maxlength="13" class="form-control" /> <span
+                    th:if="${#fields.hasErrors('simeiMei')}" th:errors="*{simeiMei}">不正な入力</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="pass">ロール</label>
+                <div class="col-sm-8 controls" id="roles">
+                  管理者 <input type="checkbox" th:field="*{roleList}" value="ROLE_ADMIN" id="ROLE_ADMIN"/>
+            　    ユーザー <input type="checkbox" th:field="*{roleList}" value="ROLE_USER" id="ROLE_USER"/>
+                </div>
+              </div>
+            </fieldset>
+ <ul>
+  <li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+</ul>
+          </form>
+          
+</div>
+<!-- %%%%% ユーザーフォーム -->
+
+<!-- $$$$$ チャート表示エリア -->
+<div th:fragment="chart-area">
+          <div id="chart_div" style="width: 800px; height: 300px;"></div>
+</div>
+
+</body>
+</html>

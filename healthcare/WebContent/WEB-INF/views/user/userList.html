@@ -4,13 +4,9 @@
 
 <link rel="stylesheet" href="/healthcare/css/app_base.css" />
 <link rel="stylesheet" href="/healthcare/css/jtable.css" />
+<script src="/healthcare/js/japaneseLang.js"></script>
 <script src="/healthcare/js/userTable.js"></script>
 
-<style>
-.contents {margin: 50px;}
-td {padding: 1px;}
-th {padding: 4px;}
-</style>
 <body>
 
 <!-- $$$ Navigation Bar $$$$$  -->	
@@ -29,12 +25,37 @@ th {padding: 4px;}
 </div>
 
 <!-- $$$ Contents Body $$$$$  -->	
+<div class="row">
+<div class="col-lg-12">
+  <div class="table-container">
+    <table id="dtTable" class="display">
+      <thead>
+        <tr>
+          <th>ユーザー名</th>
+          <th>姓</th>
+          <th>名</th>
+          <th>ロール</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <br /><br />
+  </div>
+  
+  <button id="btn-create" class="btn btn-primary btn-lg" >追加</button>
+  <button id="btn-test1" class="btn btn-primary btn-lg" >ページ移動</button>
+  <!-- $$$ Contents Footer $$$$$  -->	
+  <div th:include="fragment/frag01 :: footer" th:with="title=#{app.footer}"></div>
+</div>
+</div>
 
 </div> <!-- Container END -->
 </div> <!-- Contents END -->
 
 <div th:with="nestFrag='user-form',modalFooter='form-modal-footer',modalLg='false'" 
-  th:include="fragment/frag01 :: create-modal"></div>
+  th:include="fragment/fragModal :: create-modal"></div>
 
 </body>
 </html>

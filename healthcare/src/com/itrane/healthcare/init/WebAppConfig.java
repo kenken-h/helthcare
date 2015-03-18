@@ -60,8 +60,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter
 	// 静的リソースの設定
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations(
-				"/resources/");
+		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+		registry.addResourceHandler("/img/**").addResourceLocations("/img/");
 	}
 
 	// テンプレートリゾルバーの設定

@@ -22,37 +22,39 @@ public class ExcelBuilder extends AbstractExcelView {
 
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model,
-			HSSFWorkbook workbook, HttpServletRequest arg2,
-			HttpServletResponse arg3) throws Exception {
-				exportVod(model, workbook);
+			HSSFWorkbook workbook, HttpServletRequest req,
+			HttpServletResponse res) throws Exception {
+		String fileName = (String) model.get("fileName");
+		res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+		exportVod(model, workbook);
 
 	}
-	
-	private void exportVod(Map<String, Object> model,
-			HSSFWorkbook workbook) throws Exception {
+
+	private void exportVod(Map<String, Object> model, HSSFWorkbook workbook)
+			throws Exception {
 		@SuppressWarnings("unchecked")
 		List<Vod> vods = (List<Vod>) model.get("vods");
 		@SuppressWarnings("unchecked")
-		List<VitalMst> vms = (List<VitalMst>)model.get("vms");
+		List<VitalMst> vms = (List<VitalMst>) model.get("vms");
 
 		HSSFSheet sheet = workbook.createSheet("バイタル");
 		sheet.setDefaultColumnWidth(12);
 
 		HSSFCellStyle cellStyle = workbook.createCellStyle();
 		cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
-		
+
 		HSSFRow header = sheet.createRow(0);
 		HSSFCell cell = header.createCell(0);
-		
-		//ヘッダ
+
+		// ヘッダ
 		cell.setCellValue("日付");
 		cell.setCellStyle(cellStyle);
 		int col = 1;
-		for (VitalMst vm: vms) {
+		for (VitalMst vm : vms) {
 			cell = header.createCell(col++);
 			cell.setCellValue(vm.getName());
 		}
-		
+
 		int row = 1;
 		for (Vod vod : vods) {
 			HSSFRow arow = sheet.createRow(row++);
@@ -61,10 +63,10 @@ public class ExcelBuilder extends AbstractExcelView {
 			cell.setCellValue(vod.getSokuteiBi());
 			cell.setCellStyle(cellStyle);
 			int c = 1;
-			for (Vital vt: vod.getVitals()) {
+			for (Vital vt : vod.getVitals()) {
 				arow.createCell(c++).setCellValue(vt.getSokuteiTi());
 			}
 		}
 	}
-	
+
 }

@@ -2,62 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragment/frag01 :: htmlhead" th:with="title=#{app.title}"></head>
 
-<style>
-.contents {
-	margin: 50px;
-}
-</style>
+<link rel="stylesheet" href="/healthcare/css/app_base.css" />
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	<!--
-	$(document).ready(function() {
-		$("#bsButton").click(showBsChart);
-	});
-	//血糖値
-	function showBsChart() {
-		$.post('/healthcare/showBsChart', //URL
-		{}, //User データ 
-		function(result) { //成功時のコールバック
-			$("#myModalLabel").html("血糖値グラフ");
-			$('#myModal').modal('show');
-			var data = google.visualization.arrayToDataTable(result);
-			var options = {
-				title : '血糖値',
-				vAxis : {
-					title : "血糖値"
-				},
-				hAxis : {
-					title : "日付"
-				},
-				seriesType : "bars",
-				series : {
-					4 : {
-						type : "line"
-					}
-				}
-			};
-			var chart = new google.visualization.ComboChart(document
-					.getElementById('chart_div'));
-			chart.draw(data, options);
-		});
-	}
-	//血圧
-	function showBpChart() {
-		alert('showBpchart');
-	}
-	//体温
-	function showBtChart() {
-		alert('showBtchart');
-	}
-	//体重
-	function showWtChart() {
-		alert('showWtchart');
-	}
-	-->
-</script>
+<script src="/healthcare/js/chart.js"></script>
+<script src="/healthcare/js/nanobar.js"></script>
+<script src="/healthcare/js/import.js"></script>
 <body th:object="${vodListCmd}">
   <div th:include="fragment/frag01 :: navbar" th:with="title=#{app.title}"></div>
 
@@ -109,6 +58,16 @@
                 th:text="${vt.sokuteiTi}" class="text-danger">測定値</span></td>
             </tr>
           </table>
+          <div class="col-lg-4">
+            <input type="file" name="file1" id="file1" class="form-control"/>
+          </div>
+          <div class="col-lg-3">
+            <input type="button" id="subbutton" value="インポート" class="btn btn-primary" />
+          </div>
+          <a href="#" th:href="@{/downloadExcel}" 
+            class="btn btn-primary btn-md" role="button">エクスポート Excel</a>
+          <a href="#" target="_blank" th:href="@{/downloadPdf}"
+            class="btn btn-primary btn-md" role="button">エクスポート PDF</a>
           <hr />
           <div th:include="fragment/frag01 :: footer" th:with="title=#{app.footer}"></div>
         </div>
@@ -117,7 +76,8 @@
     </div>
   </div>
 
-  <div th:include="fragment/frag01 :: chart-create-modal"></div>
+  <div th:with="nestFrag='chart-area',modalFooter='chart-modal-footer',modalLg='true'" 
+    th:include="fragment/fragModal :: create-modal"></div>
 
 </body>
 </html>

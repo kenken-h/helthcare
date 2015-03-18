@@ -10,6 +10,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -41,15 +43,33 @@ public class Vod implements Serializable {
 	
 	private String memo;
 	
+	private UserInfo user;
+	
 	/** コンストラクタ. */
 	public Vod() {
 		this.sokuteiBi = DateTime.now().toString("yyyy/MM/dd");
 	}
+	
+	public Vod(UserInfo user, String sokuteiBi) {
+		this.user = user;
+		this.sokuteiBi = sokuteiBi;
+	}
 
+	@ManyToOne(optional=false)
+    @JoinColumn(name="USER_ID", nullable=false, updatable=false)
+	public UserInfo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfo user) {
+		this.user = user;
+	}
+	
 	/** 測定日の取得 */
 	public String getSokuteiBi() {
 		return sokuteiBi;
 	}
+
 	/**
 	 * 測定日の設定
 	 * @param sokuteiBi
@@ -125,7 +145,8 @@ public class Vod implements Serializable {
 	@Override
 	public String toString() {
 		return "Vod [id=" + id + ", version=" + version + ", sokuteiBi="
-				+ sokuteiBi +  ", memo=" + memo + "]";
+				+ sokuteiBi + ", vitals=" + vitals + ", memo=" + memo
+				+ ", user=" + user + "]";
 	}
 
 }

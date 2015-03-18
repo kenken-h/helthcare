@@ -3,9 +3,6 @@ package com.itrane.healthcare.command;
 import java.io.Serializable;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.itrane.healthcare.model.Vital;
 import com.itrane.healthcare.model.Vod;
 
@@ -15,8 +12,6 @@ import com.itrane.healthcare.model.Vod;
 public class HomeCmd implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	final private Logger log = LoggerFactory.getLogger(HomeCmd.class);
 
 	private Vod vod;
 	private List<VitalCmd> vitalCmds;

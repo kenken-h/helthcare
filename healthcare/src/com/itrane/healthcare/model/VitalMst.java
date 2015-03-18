@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -32,7 +34,7 @@ public class VitalMst implements Serializable {
 	private String type;
 	private int junjo;
 	
-	private String userName;
+	private UserInfo user;
 	
 	public VitalMst() {
 		//
@@ -40,7 +42,7 @@ public class VitalMst implements Serializable {
 	
 	public VitalMst(String name, String jikan, 
 			Number kijunMin, Number kijunMax, 
-			String type, int junjo) {
+			String type, int junjo, UserInfo user) {
 		super();
 		this.name = name;
 		this.jikan = jikan; 
@@ -48,8 +50,19 @@ public class VitalMst implements Serializable {
 		this.kijunMax = kijunMax;
 		this.type = type;
 		this.junjo = junjo;
+		this.user = user;
 	}
 	
+	@ManyToOne(optional=false)
+    @JoinColumn(name="USER_ID", nullable=false, updatable=false)
+	public UserInfo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfo user) {
+		this.user = user;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -107,14 +120,6 @@ public class VitalMst implements Serializable {
 		this.junjo = junjo;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -144,7 +149,6 @@ public class VitalMst implements Serializable {
 	public String toString() {
 		return "VitalMst [id=" + id + ", version=" + version + ", name=" + name
 				+ ", jikan=" + jikan + ", kijunMin=" + kijunMin + ", kijunMax="
-				+ kijunMax + ", type=" + type + ", junjo=" + junjo
-				+ ", userName=" + userName + "]";
+				+ kijunMax + ", type=" + type + ", junjo=" + junjo + "]";
 	}
 }

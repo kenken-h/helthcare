@@ -8,48 +8,55 @@ import javax.annotation.PostConstruct;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itrane.healthcare.model.UserInfo;
 import com.itrane.healthcare.model.Vital;
 import com.itrane.healthcare.model.VitalMst;
 import com.itrane.healthcare.model.Vod;
+import com.itrane.healthcare.repo.UserRepository;
 import com.itrane.healthcare.repo.VitalMstRepository;
 import com.itrane.healthcare.service.VodService;
 
 /**
  * バイタルマスターと一月分のバイタルデータを作成するクラス. 
- * TODO: デモ版のため、ここで1ユーザー分の作成。 
  * 実アプリではマスター保守機能を追加する必要がある
  */
 public class CreateDummyData {
 
-	@Autowired
-	private VitalMstRepository repo;
-	
-	@Autowired
-	private VodService vodService;
+	@Autowired private VitalMstRepository repo;
+	@Autowired private VodService vodService;
+	@Autowired private UserRepository userRepo;
 
 	@PostConstruct
 	public void createData() {
-		DateTime todayDt = DateTime.now();
-		DateTime startDt = todayDt.minusMonths(1);
-		List<VitalMst> vms = repo.findAll();
-		int c = 0;
-		for (DateTime d = startDt; d.isBefore(todayDt); d = d.plusDays(1)) {
-			List<Vital> vitals = new ArrayList<Vital>();
-			Vod todayVod = new Vod();
-			todayVod.setSokuteiBi(d.toString("yyyy/MM/dd"));
-			if (vms.size() > 0) {
-				for (VitalMst vm : vms) {
-					if (c >= BS_HOSEI.length) {
-						c = 0;
+		String[] userNames = {"user1", "user2", "user3"};
+		//ユーザーごとに
+		for (String userName: userNames) {
+			DateTime todayDt = DateTime.now();
+			DateTime startDt = todayDt.minusMonths(1);
+			List<UserInfo> pts = userRepo.findByName(userName);
+			List<VitalMst> vms = new ArrayList<VitalMst>();
+			if (pts.size()==1) {
+				UserInfo user = pts.get(0);
+				vms = repo.findAllByUser(user);
+				int c = 0;
+				//システム日の前日から１月前までの期間のバイタル測定を作成
+				for (DateTime d = startDt; d.isBefore(todayDt); d = d.plusDays(1)) {
+					List<Vital> vitals = new ArrayList<Vital>();
+					Vod todayVod = new Vod(user, d.toString("yyyy/MM/dd"));
+					if (vms.size() > 0) {
+						for (VitalMst vm : vms) {
+							if (c >= BS_HOSEI.length) {
+								c = 0;
+							}
+							vitals.add(createVital(vm, todayVod, c));
+							c++;
+						}
 					}
-					vitals.add(createVital(vm, todayVod, c));
-					c++;
+					todayVod.setVitals(vitals);
+					vodService.create(todayVod);
 				}
 			}
-			todayVod.setVitals(vitals);
-			vodService.create(todayVod);
 		}
-		vms = repo.findAll();
 	}
 	
 	private double FBS = 110;
